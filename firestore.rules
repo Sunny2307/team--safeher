@@ -1,0 +1,35 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Forum and health module: server-only (backend uses Admin SDK and bypasses rules).
+    // Client app must use REST API; no direct client access to preserve anonymity and moderation.
+    match /forum_posts/{id} {
+      allow read, write: if false;
+    }
+    match /forum_comments/{id} {
+      allow read, write: if false;
+    }
+    match /forum_reports/{id} {
+      allow read, write: if false;
+    }
+    match /forum_profiles/{id} {
+      allow read, write: if false;
+    }
+    match /forum_user_meta/{id} {
+      allow read, write: if false;
+    }
+    match /forum_post_likes/{id} {
+      allow read, write: if false;
+    }
+    match /pcos_resources/{id} {
+      allow read, write: if false;
+    }
+
+    // Legacy: temporary allow for other collections (update before expiry)
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2025, 6, 22);
+    }
+  }
+}

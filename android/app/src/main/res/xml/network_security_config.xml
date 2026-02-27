@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+  <!-- Allow all cleartext traffic for development -->
+  <!-- This allows HTTP connections to development servers on any network -->
+  <base-config cleartextTrafficPermitted="true">
+  </base-config>
+</network-security-config>
