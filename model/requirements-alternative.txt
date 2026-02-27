@@ -1,0 +1,7 @@
+Flask==2.3.3
+Flask-CORS==4.0.0
+gunicorn==21.2.0
+# Using pre-compiled pandas wheel
+pandas==1.5.3 --only-binary=all
+
+
