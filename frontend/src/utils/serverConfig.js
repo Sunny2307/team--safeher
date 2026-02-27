@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const SERVER_IP_KEY = 'server_ip_address';
 const SERVER_PORT = '3000';
-const LOCAL_FALLBACK_BASE_URL = 'http://10.181.142.178:3000';
+const LOCAL_FALLBACK_BASE_URL = 'http://192.168.1.208:3000';
 const PRODUCTION_URL = 'https://safeher-backend-render.onrender.com';
 const DEFAULT_TIMEOUT = 5000; // 5 seconds timeout for IP detection
 
@@ -49,8 +49,8 @@ const generatePossibleIPs = (deviceIP) => {
  */
 const testServerIP = async (ip, port = SERVER_PORT) => {
   try {
-    const url = ip === '10.181.142.178'
-      ? `http://10.181.142.178:${port}/health`
+    const url = ip === '192.168.1.208'
+      ? `http://192.168.1.208:${port}/health`
       : `http://${ip}:${port}/health`;
     const response = await axios.get(url, { timeout: DEFAULT_TIMEOUT });
     return response.status === 200;
@@ -153,7 +153,7 @@ export const getServerIP = async () => {
   try {
     // First, try to get stored IP
     const storedIP = await AsyncStorage.getItem(SERVER_IP_KEY);
-    if (storedIP && storedIP !== '10.181.142.178') {
+    if (storedIP && storedIP !== '192.168.1.208') {
       // Quick check if stored IP is reachable (with shorter timeout)
       try {
         const isReachable = await testServerIP(storedIP);
@@ -169,16 +169,16 @@ export const getServerIP = async () => {
       await AsyncStorage.removeItem(SERVER_IP_KEY);
     }
 
-    // Try 10.181.142.178 first (fastest)
+    // Try 192.168.1.208 first (fastest)
     try {
-      const url = `http://10.181.142.178:${SERVER_PORT}/health`;
+      const url = `http://192.168.1.208:${SERVER_PORT}/health`;
       const response = await axios.get(url, { timeout: 1000 });
       if (response.status === 200) {
-        return '10.181.142.178';
+        return '192.168.1.208';
       }
     } catch (error) {
       if (error.response) {
-        return '10.181.142.178'; // Server responded
+        return '192.168.1.208'; // Server responded
       }
     }
 
@@ -190,11 +190,11 @@ export const getServerIP = async () => {
       return detectedIP;
     }
 
-    // Fallback to 10.181.142.178
-    return '10.181.142.178';
+    // Fallback to 192.168.1.208
+    return '192.168.1.208';
   } catch (error) {
     console.error('Error getting server IP:', error);
-    return '10.181.142.178';
+    return '192.168.1.208';
   }
 };
 
@@ -210,8 +210,8 @@ export const getServerURL = async () => {
 
   try {
     const ip = await getServerIP();
-    // If IP is '10.181.142.178', return the 10.181.142.178 URL directly
-    if (ip === '10.181.142.178') {
+    // If IP is '192.168.1.208', return the 192.168.1.208 URL directly
+    if (ip === '192.168.1.208') {
       return LOCAL_FALLBACK_BASE_URL;
     }
     return `http://${ip}:${SERVER_PORT}`;

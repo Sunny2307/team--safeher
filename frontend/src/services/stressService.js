@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for the Python Flask backend
-// Use your computer's IP address instead of 10.181.142.178 for React Native
+// Use your computer's IP address instead of 192.168.1.208 for React Native
 const STRESS_API_BASE_URL = 'https://safeher-quiz-vercel.vercel.app';
 
 const stressService = {
